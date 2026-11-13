@@ -109,7 +109,7 @@ export class NTQQUserApi {
         nick: profile.simpleInfo.coreInfo.nick || '',
       };
     }
-    this.context.logger.logDebug('[NapCat] [Mark] getUserDetailInfo Mode1 Failed.');
+    this.context.logger.logDebug('[neococo] [Mark] getUserDetailInfo Mode1 Failed.');
     profile = await this.fetchUserDetailInfo(uid, UserDetailSource.KSERVER);
     if (profile && profile.uin === '0') {
       profile.uin = await this.core.apis.UserApi.getUidByUinV2(uid) ?? '0';

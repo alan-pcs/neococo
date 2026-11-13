@@ -1,7 +1,7 @@
 import { PluginConfigItem, PluginConfigSchema } from './types';
 
 /**
- * NapCat 插件配置构建器
+ * neococo 插件配置构建器
  * 提供便捷的配置项创建方法
  */
 export class NapCatConfig {

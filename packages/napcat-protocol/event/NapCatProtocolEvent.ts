@@ -1,6 +1,6 @@
 import { NapCatCore } from 'napcat-core';
 
-// NapCat Protocol 事件基类
+// neococo Protocol 事件基类
 export abstract class NapCatProtocolEvent {
   protected core: NapCatCore;
   public time: number;

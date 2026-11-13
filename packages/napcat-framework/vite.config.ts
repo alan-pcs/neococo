@@ -31,7 +31,6 @@ const FrameworkBaseConfigPlugin: PluginOption[] = [
       { src: './preload.cjs', dest: 'dist' },
       { src: './renderer.js', dest: 'dist' },
       { src: '../../package.json', dest: 'dist' },
-      { src: '../../logo.png', dest: 'dist' },
     ],
   }),
   nodeResolve(),

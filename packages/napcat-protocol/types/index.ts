@@ -1,4 +1,4 @@
-// NapCat Protocol 消息类型定义
+// neococo Protocol 消息类型定义
 
 export interface NapCatProtocolMessage {
   post_type: 'message' | 'notice' | 'request' | 'meta_event';

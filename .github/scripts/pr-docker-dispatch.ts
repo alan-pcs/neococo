@@ -1,9 +1,9 @@
 /**
- * PR Build - 触发 NapCat-Docker 仓库构建 PR 测试镜像
+ * PR Build - 触发 Docker 仓库构建 PR 测试镜像
  *
  * 功能：
  *   1. 在 PR 中创建 Docker 构建中评论
- *   2. 触发 NapCat-Docker 仓库的 repository_dispatch 事件
+ *   2. 触发 Docker 仓库的 repository_dispatch 事件
  *
  * 环境变量：
  *   DISPATCH_PAT   - 具备目标仓库 dispatch 权限的 PAT

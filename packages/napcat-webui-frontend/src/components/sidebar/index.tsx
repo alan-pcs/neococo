@@ -75,7 +75,7 @@ const SideBar: React.FC<SideBarProps> = (props) => {
               hasBackground ? 'text-white' : 'text-default-900 dark:text-white'
             )}
             >
-              NapCat
+              neococo
             </div>
           </div>
           <div className='overflow-y-auto flex flex-col flex-1 px-2'>

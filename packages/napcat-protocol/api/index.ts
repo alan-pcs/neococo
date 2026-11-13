@@ -1,7 +1,7 @@
 import { NapCatCore } from 'napcat-core';
 import { NapCatProtocolAdapter } from '@/napcat-protocol/index';
 
-// NapCat Protocol API 基类
+// neococo Protocol API 基类
 export abstract class NapCatProtocolApiBase {
   protected adapter: NapCatProtocolAdapter;
   protected core: NapCatCore;

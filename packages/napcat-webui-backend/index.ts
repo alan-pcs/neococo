@@ -101,12 +101,12 @@ async function checkCertificates (logger: ILogWrapper): Promise<{ key: string, c
     if (existsSync(certPath) && existsSync(keyPath)) {
       const cert = readFileSync(certPath, 'utf8');
       const key = readFileSync(keyPath, 'utf8');
-      logger.log('[NapCat] [WebUi] 找到SSL证书，将启用HTTPS模式');
+      logger.log('[neococo] [WebUi] 找到SSL证书，将启用HTTPS模式');
       return { cert, key };
     }
     return null;
   } catch (error) {
-    logger.log('[NapCat] [WebUi] 检查SSL证书时出错: ' + error);
+    logger.log('[neococo] [WebUi] 检查SSL证书时出错: ' + error);
     return null;
   }
 }
@@ -120,24 +120,24 @@ export async function InitWebUi (logger: ILogWrapper, pathWrapper: NapCatPathWra
 
   // 检查是否禁用WebUI（若禁用则不进行密码检测）
   if (config.disableWebUI) {
-    logger.log('[NapCat] [WebUi] WebUI is disabled by configuration.');
+    logger.log('[neococo] [WebUi] WebUI is disabled by configuration.');
     return;
   }
 
   // 优先使用环境变量覆盖 Token
   if (process.env['NAPCAT_WEBUI_SECRET_KEY'] && config.token !== process.env['NAPCAT_WEBUI_SECRET_KEY']) {
     await WebUiConfig.UpdateWebUIConfig({ token: process.env['NAPCAT_WEBUI_SECRET_KEY'] });
-    logger.log(`[NapCat] [WebUi] 检测到环境变量配置，已更新 WebUI Token 为 ${process.env['NAPCAT_WEBUI_SECRET_KEY']}`);
+    logger.log(`[neococo] [WebUi] 检测到环境变量配置，已更新 WebUI Token 为 ${process.env['NAPCAT_WEBUI_SECRET_KEY']}`);
     config = await WebUiConfig.GetWebUIConfig();
   } else if (config.token === 'napcat' || !config.token) {
     // 只有没设置环境变量，且是默认密码时，才生成随机密码
     const randomToken = getRandomToken(8);
     await WebUiConfig.UpdateWebUIConfig({ token: randomToken });
-    logger.log('[NapCat] [WebUi] 检测到默认密码，已自动更新为安全密码');
+    logger.log('[neococo] [WebUi] 检测到默认密码，已自动更新为安全密码');
 
     // 存储token到全局变量，等待QQ登录成功后发送
     setPendingTokenToSend(randomToken);
-    logger.log('[NapCat] [WebUi] 新密码将在QQ登录成功后发送给用户');
+    logger.log('[neococo] [WebUi] 新密码将在QQ登录成功后发送给用户');
 
     // 重新获取更新后的配置
     config = await WebUiConfig.GetWebUIConfig();
@@ -149,7 +149,7 @@ export async function InitWebUi (logger: ILogWrapper, pathWrapper: NapCatPathWra
   const [host, port, token] = await InitPort(config);
   webUiRuntimePort = port;
   if (port === 0) {
-    logger.log('[NapCat] [WebUi] Current WebUi is not run.');
+    logger.log('[neococo] [WebUi] Current WebUi is not run.');
     return;
   }
   WebUiDataRuntime.setWebUiConfigQuickFunction(
@@ -161,12 +161,12 @@ export async function InitWebUi (logger: ILogWrapper, pathWrapper: NapCatPathWra
           if (/^[a-fA-F0-9]{32}$/.test(quickPasswordMd5FromEnv)) {
             return quickPasswordMd5FromEnv.toLowerCase();
           }
-          console.log('[NapCat] [WebUi] NAPCAT_QUICK_PASSWORD_MD5 格式无效（需为 32 位 MD5）');
+          console.log('[neococo] [WebUi] NAPCAT_QUICK_PASSWORD_MD5 格式无效（需为 32 位 MD5）');
         }
 
         const quickPassword = process.env['NAPCAT_QUICK_PASSWORD'];
         if (typeof quickPassword === 'string' && quickPassword.length > 0) {
-          console.log('[NapCat] [WebUi] 检测到 NAPCAT_QUICK_PASSWORD，已在内存中计算 MD5 用于回退登录');
+          console.log('[neococo] [WebUi] 检测到 NAPCAT_QUICK_PASSWORD，已在内存中计算 MD5 用于回退登录');
           return createHash('md5').update(quickPassword, 'utf8').digest('hex');
         }
         return undefined;
@@ -179,36 +179,36 @@ export async function InitWebUi (logger: ILogWrapper, pathWrapper: NapCatPathWra
       try {
         const { result, message } = await WebUiDataRuntime.requestQuickLogin(autoLoginAccount);
         if (result) {
-          console.log(`[NapCat] [WebUi] 自动快速登录成功: ${autoLoginAccount}`);
+          console.log(`[neococo] [WebUi] 自动快速登录成功: ${autoLoginAccount}`);
           return;
         }
-        console.log(`[NapCat] [WebUi] 自动快速登录失败: ${message || '未知错误'}`);
+        console.log(`[neococo] [WebUi] 自动快速登录失败: ${message || '未知错误'}`);
       } catch (error) {
-        console.log('[NapCat] [WebUi] 自动快速登录异常:' + error);
+        console.log('[neococo] [WebUi] 自动快速登录异常:' + error);
       }
 
       if (!quickPasswordMd5) {
-        console.log(`[NapCat] [WebUi] QQ ${autoLoginAccount} 未配置回退密码环境变量，建议优先使用 ACCOUNT + NAPCAT_QUICK_PASSWORD（NAPCAT_QUICK_PASSWORD_MD5 作为备用），保持二维码登录兜底`);
+        console.log(`[neococo] [WebUi] QQ ${autoLoginAccount} 未配置回退密码环境变量，建议优先使用 ACCOUNT + NAPCAT_QUICK_PASSWORD（NAPCAT_QUICK_PASSWORD_MD5 作为备用），保持二维码登录兜底`);
         return;
       }
 
       try {
         const { result, message, needCaptcha, needNewDevice } = await WebUiDataRuntime.requestPasswordLogin(autoLoginAccount, quickPasswordMd5);
         if (result) {
-          console.log(`[NapCat] [WebUi] 自动密码回退登录成功: ${autoLoginAccount}`);
+          console.log(`[neococo] [WebUi] 自动密码回退登录成功: ${autoLoginAccount}`);
           return;
         }
         if (needCaptcha) {
-          console.log(`[NapCat] [WebUi] 自动密码回退登录需要验证码，请在登录页面继续完成: ${autoLoginAccount}`);
+          console.log(`[neococo] [WebUi] 自动密码回退登录需要验证码，请在登录页面继续完成: ${autoLoginAccount}`);
           return;
         }
         if (needNewDevice) {
-          console.log(`[NapCat] [WebUi] 自动密码回退登录需要新设备验证，请在登录页面继续完成: ${autoLoginAccount}`);
+          console.log(`[neococo] [WebUi] 自动密码回退登录需要新设备验证，请在登录页面继续完成: ${autoLoginAccount}`);
           return;
         }
-        console.log(`[NapCat] [WebUi] 自动密码回退登录失败: ${message || '未知错误'}`);
+        console.log(`[neococo] [WebUi] 自动密码回退登录失败: ${message || '未知错误'}`);
       } catch (error) {
-        console.log('[NapCat] [WebUi] 自动密码回退登录异常:' + error);
+        console.log('[neococo] [WebUi] 自动密码回退登录异常:' + error);
       }
     });
   // ------------注册中间件------------
@@ -327,7 +327,7 @@ export async function InitWebUi (logger: ILogWrapper, pathWrapper: NapCatPathWra
       res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.send(swContent);
     } catch (error) {
-      console.error('[NapCat] [WebUi] Error generating sw.js', error);
+      console.error('[neococo] [WebUi] Error generating sw.js', error);
       res.status(500).send('Error generating service worker');
     }
   });
@@ -508,13 +508,13 @@ export async function InitWebUi (logger: ILogWrapper, pathWrapper: NapCatPathWra
   // ------------启动服务------------
   server.listen(port, host, async () => {
     const searchParams = { token };
-    logger.log(`[NapCat] [WebUi] WebUi Token: ${token}`);
+    logger.log(`[neococo] [WebUi] WebUi Token: ${token}`);
     logger.log(
-      `[NapCat] [WebUi] WebUi User Panel Url: ${createUrl('127.0.0.1', port.toString(), '/webui', searchParams)}`
+      `[neococo] [WebUi] WebUi User Panel Url: ${createUrl('127.0.0.1', port.toString(), '/webui', searchParams)}`
     );
     if (host !== '') {
       logger.log(
-        `[NapCat] [WebUi] WebUi User Panel Url: ${createUrl(host, port.toString(), '/webui', searchParams)}`
+        `[neococo] [WebUi] WebUi User Panel Url: ${createUrl(host, port.toString(), '/webui', searchParams)}`
       );
     }
   });

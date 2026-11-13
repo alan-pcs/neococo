@@ -543,8 +543,8 @@ function createOpenAPIDocument (): Record<string, unknown> {
   return {
     openapi: '3.1.0',
     info: {
-      title: 'NapCat OneBot 11 HTTP API',
-      description: 'NapCatOneBot11 HTTP POST 接口文档',
+      title: 'neococo OneBot 11 HTTP API',
+      description: 'neococo OneBot11 HTTP POST 接口文档',
       version: napCatVersion,
     },
     tags: [

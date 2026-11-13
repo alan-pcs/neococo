@@ -250,7 +250,7 @@ const theme: ThemeConfig = {
 };
 export default {
   theme,
-  author: 'NapCat',
+  author: 'neococo',
   name: 'nc_pink',
-  description: 'NapCat Pink Theme',
+  description: 'neococo Pink Theme',
 } satisfies ThemeInfo;

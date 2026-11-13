@@ -1,6 +1,5 @@
 import { Button } from '@heroui/button';
 import { CardBody, CardHeader } from '@heroui/card';
-import { Image } from '@heroui/image';
 import { Tab, Tabs } from '@heroui/tabs';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -8,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { MdSettings } from 'react-icons/md';
 
-import logo from '@/assets/images/logo.png';
 import GUIDManager from '@/components/guid_manager';
 import Modal from '@/components/modal';
 
@@ -356,7 +354,7 @@ export default function QQLoginPage () {
 
   return (
     <>
-      <title>QQ登录 - NapCat WebUI</title>
+      <title>QQ登录 - neococo WebUI</title>
       <PureLayout>
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -371,7 +369,7 @@ export default function QQLoginPage () {
           >
             <CardHeader className='inline-block max-w-lg text-center justify-center'>
               <div className='flex items-center justify-center w-full gap-2 pt-10'>
-                <Image alt='logo' height='7em' src={logo} />
+                <span className={title({ color: 'violet' })}>neococo</span>
                 <div>
                   <span className={title()}>Web&nbsp;</span>
                   <span className={title({ color: 'violet' })}>

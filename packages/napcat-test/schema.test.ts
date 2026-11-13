@@ -8,7 +8,7 @@ import { OB11MessageSchema as OB11ActionMessageSchema } from '../napcat-onebot/a
 import { OneBotConfigSchema, loadConfig as loadOneBotConfig, OneBotConfig } from '../napcat-onebot/config';
 import { NapcatConfigSchema } from '../napcat-core/helper/config';
 
-describe('NapCat Schemas Compilation', () => {
+describe('neococo Schemas Compilation', () => {
   test('should compile OB11MessageDataSchema without duplicate id error', () => {
     expect(() => TypeCompiler.Compile(OB11MessageDataSchema)).not.toThrow();
   });
@@ -34,7 +34,7 @@ describe('NapCat Schemas Compilation', () => {
   });
 });
 
-describe('NapCat Schemas Validation & Coercion', () => {
+describe('neococo Schemas Validation & Coercion', () => {
   test('should coerce numeric user_id to string in OB11PostSendMsgSchema', () => {
     const payload = {
       message_type: 'private',
@@ -65,7 +65,7 @@ describe('NapCat Schemas Validation & Coercion', () => {
   });
 });
 
-describe('NapCat Configuration Loaders', () => {
+describe('neococo Configuration Loaders', () => {
   test('OneBotConfig schemas should compile', () => {
     expect(() => TypeCompiler.Compile(OneBotConfigSchema)).not.toThrow();
   });

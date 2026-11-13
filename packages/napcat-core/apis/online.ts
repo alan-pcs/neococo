@@ -24,7 +24,7 @@ export class NTQQOnlineApi {
    */
   async sendOnlineFile (peer: Peer, filePath: string, fileName: string): Promise<any> {
     if (!fs.existsSync(filePath)) {
-      throw new Error(`[NapCat] 文件不存在: ${filePath}`);
+      throw new Error(`[neococo] 文件不存在: ${filePath}`);
     }
     const actualFileName = fileName || path.basename(filePath);
     const fileSize = fs.statSync(filePath).size.toString();
@@ -88,7 +88,7 @@ export class NTQQOnlineApi {
     this.context.logger.logError('[OnlineFile] 在线文件发送失败！！！');
     return {
       result: GeneralCallResultStatus.ERROR,
-      errMsg: '[NapCat] Send Online File Timeout: Message not found in history.',
+      errMsg: '[neococo] Send Online File Timeout: Message not found in history.',
     };
   }
 
@@ -166,7 +166,7 @@ export class NTQQOnlineApi {
     this.context.logger.logError('[OnlineFile] 在线文件发送失败!!!');
     return {
       result: GeneralCallResultStatus.ERROR,
-      errMsg: '[NapCat] Send Online Folder Timeout: Message not found in history.',
+      errMsg: '[neococo] Send Online Folder Timeout: Message not found in history.',
     };
   }
 

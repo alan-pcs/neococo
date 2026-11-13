@@ -9,7 +9,7 @@ import {
   OB11BaseMetaEvent,
 } from './dist/napcat-types/index';
 
-console.log('--- NapCat Comprehensive Type Test ---');
+console.log('--- neococo Comprehensive Type Test ---');
 
 // 1. 测试枚举 (Core)
 console.log('ChatType.KCHATTYPEGROUP:', ChatType.KCHATTYPEGROUP); // 应输出 2

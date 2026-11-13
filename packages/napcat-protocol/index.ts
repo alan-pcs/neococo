@@ -22,7 +22,7 @@ interface ApiListType {
   FriendApi: NapCatProtocolFriendApi;
 }
 
-// NapCat Protocol 适配器 - NapCat 私有 Bot 协议实现
+// neococo Protocol 适配器 - neococo 私有 Bot 协议实现
 export class NapCatProtocolAdapter {
   readonly core: NapCatCore;
   readonly context: InstanceContext;
@@ -52,7 +52,7 @@ export class NapCatProtocolAdapter {
   }
 
   async createProtocolLog (config: NapCatProtocolConfig) {
-    let log = '[NapCat Protocol] 配置加载\n';
+    let log = '[neococo Protocol] 配置加载\n';
     log += `协议状态: ${config.enable ? '已启用' : '已禁用'}\n`;
 
     if (config.enable) {
@@ -74,7 +74,7 @@ export class NapCatProtocolAdapter {
 
     // 如果协议未启用，直接返回
     if (!config.enable) {
-      this.context.logger.log('[NapCat Protocol] 协议未启用，跳过初始化');
+      this.context.logger.log('[neococo Protocol] 协议未启用，跳过初始化');
       return;
     }
 
@@ -88,12 +88,12 @@ export class NapCatProtocolAdapter {
 
     await this.networkManager.openAllAdapters();
 
-    this.context.logger.log(`[NapCat Protocol] 初始化完成，Bot: ${selfInfo.uin}`);
+    this.context.logger.log(`[neococo Protocol] 初始化完成，Bot: ${selfInfo.uin}`);
   }
 
   async close () {
     await this.networkManager.closeAllAdapters();
-    this.context.logger.log('[NapCat Protocol] 已关闭所有网络适配器');
+    this.context.logger.log('[neococo Protocol] 已关闭所有网络适配器');
   }
 }
 

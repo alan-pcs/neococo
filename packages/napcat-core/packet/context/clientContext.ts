@@ -76,7 +76,7 @@ export class PacketClientContext {
     this.logger.info('使用 NativePacketClient 作为后端');
     const client = new NativePacketClient(this.napCore, this.logger, this.logStack, this.napi2nativeLoader);
     if (!client.check()) {
-      throw new Error('[Core] [Packet] NativePacketClient 不可用，NapCat.Packet将不会加载！');
+      throw new Error('[Core] [Packet] NativePacketClient 不可用，neococo.Packet将不会加载！');
     }
     return client;
   }

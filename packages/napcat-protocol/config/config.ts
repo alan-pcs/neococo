@@ -42,7 +42,7 @@ const NetworkConfigSchema = Type.Object({
   websocketClients: Type.Array(WebsocketClientConfigSchema, { default: [] }),
 }, { default: {} });
 
-// NapCat Protocol 主配置 - 默认关闭
+// neococo Protocol 主配置 - 默认关闭
 export const NapCatProtocolConfigSchema = Type.Object({
   enable: Type.Boolean({ default: false }), // 默认关闭
   network: NetworkConfigSchema,

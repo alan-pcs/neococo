@@ -2,7 +2,6 @@ import * as os from 'os';
 import offset from '@/napcat-core/external/napi2native.json';
 import { InstanceContext, NapCatCore } from '@/napcat-core/index';
 import { PacketClientSession } from '@/napcat-core/packet/clientSession';
-import { napCatVersion } from 'napcat-common/src/version';
 import { LogWrapper } from '../helper/log';
 
 interface OffsetType {
@@ -62,13 +61,13 @@ export class NTQQPacketApi {
     const table = typedOffset[qqVer + '-' + os.arch()];
     if (!table) {
       const err = `[Core] [Packet] PacketBackend 不支持当前QQ版本架构：${qqVer}-${os.arch()}，
-            请参照 https://github.com/NapNeko/NapCatQQ/releases/tag/v${napCatVersion} 配置正确的QQ版本！`;
+            请参照 neococo 的发布说明配置正确的QQ版本！`;
       this.logger.logError(err);
       this.errStack.push(err);
       return false;
     }
     if (this.core.configLoader.configData.packetBackend === 'disable') {
-      const err = '[Core] [Packet] 已禁用PacketBackend，NapCat.Packet将不会加载！';
+      const err = '[Core] [Packet] 已禁用PacketBackend，neococo.Packet将不会加载！';
       this.logger.logError(err);
       this.errStack.push(err);
       return false;

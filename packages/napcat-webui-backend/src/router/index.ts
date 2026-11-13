@@ -44,7 +44,7 @@ router.use('/Log', LogRouter);
 router.use('/File', FileRouter);
 // router:WebUI配置相关路由
 router.use('/WebUIConfig', WebUIConfigRouter);
-// router:更新NapCat相关路由
+// router:更新 neococo 相关路由
 router.use('/UpdateNapCat', UpdateNapCatRouter);
 // router:调试相关路由
 router.use('/Debug', DebugRouter);
@@ -54,7 +54,7 @@ router.use('/Process', ProcessRouter);
 router.use('/Plugin', PluginRouter);
 // router:镜像管理相关路由
 router.use('/Mirror', MirrorRouter);
-// router:NapCat配置相关路由
+// router:neococo配置相关路由
 router.use('/NapCatConfig', NapCatConfigRouter);
 
 export { router as ALLRouter };

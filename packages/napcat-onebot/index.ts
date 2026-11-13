@@ -128,7 +128,7 @@ export class NapCatOneBot11Adapter {
 
         // 检查是否有待发送的token
         if (pendingTokenToSend) {
-          this.context.logger.log('[NapCat] [OneBot] 🔐 检测到待发送的WebUI Token，开始发送');
+          this.context.logger.log('[neococo] [OneBot] 🔐 检测到待发送的WebUI Token，开始发送');
           try {
             await this.core.apis.MsgApi.sendMsg(
               { chatType: ChatType.KCHATTYPEC2C, peerUid: selfInfo.uid, guildId: '' },
@@ -148,9 +148,9 @@ export class NapCatOneBot11Adapter {
               }],
               5000
             );
-            this.context.logger.log('[NapCat] [OneBot] ✅ WebUI Token 消息发送成功');
+            this.context.logger.log('[neococo] [OneBot] ✅ WebUI Token 消息发送成功');
           } catch (error) {
-            this.context.logger.logError('[NapCat] [OneBot] ❌ WebUI Token 消息发送失败:', error);
+            this.context.logger.logError('[neococo] [OneBot] ❌ WebUI Token 消息发送失败:', error);
           }
         }
 

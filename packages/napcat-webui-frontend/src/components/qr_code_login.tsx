@@ -16,7 +16,7 @@ const QrCodeLogin: React.FC<QrCodeLoginProps> = ({ qrcode, loginError, onRefresh
   const transitionMessage = loginPhase === 'qrcode_scanned'
     ? '二维码已扫描，等待手机确认…'
     : loginPhase === 'initializing'
-      ? 'QQ 登录成功，正在启动 NapCat…'
+      ? 'QQ 登录成功，正在启动 neococo…'
       : loginPhase === 'reconnecting' || isRecoveringLoginService
         ? '正在重新连接 QQ 登录服务…'
         : undefined;

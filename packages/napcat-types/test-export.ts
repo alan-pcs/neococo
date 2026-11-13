@@ -1,6 +1,6 @@
 import { ChatType, ElementType, NapCatCore, NTQQMsgApi } from './index';
 
-console.log('--- NapCat Types Manual Test ---');
+console.log('--- neococo Types Manual Test ---');
 
 // 测试枚举值 (napcat-core enums)
 console.log('ChatType.KCHATTYPEGROUP:', ChatType.KCHATTYPEGROUP);
@@ -10,7 +10,7 @@ console.log('ElementType.TEXT:', ElementType.TEXT);
 const coreStub = {} as NapCatCore;
 const apiStub = {} as NTQQMsgApi;
 
-console.log('NapCatCore type check:', !!coreStub);
+console.log('neococo Core type check:', !!coreStub);
 console.log('NTQQMsgApi type check:', !!apiStub);
 
 if (ChatType.KCHATTYPEGROUP === 2 && ElementType.TEXT === 1) {

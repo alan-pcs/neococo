@@ -71,7 +71,7 @@ router.post('/GetNewDeviceQRCode', QQGetNewDeviceQRCodeHandler);
 router.post('/PollNewDeviceQR', QQPollNewDeviceQRHandler);
 // router:重置设备信息
 router.post('/ResetDeviceID', QQResetDeviceIDHandler);
-// router:重启NapCat
+// router:重启 neococo
 router.post('/RestartNapCat', QQRestartNapCatHandler);
 // router:获取设备GUID
 router.post('/GetDeviceGUID', QQGetDeviceGUIDHandler);

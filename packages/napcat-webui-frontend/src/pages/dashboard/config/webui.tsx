@@ -205,7 +205,7 @@ const WebUIConfigCard = () => {
 
   return (
     <>
-      <title>WebUI配置 - NapCat WebUI</title>
+      <title>WebUI配置 - neococo WebUI</title>
 
       {/* 修改密码区块 - 移到顶部 */}
       <div className='flex flex-col gap-4'>

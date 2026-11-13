@@ -917,7 +917,7 @@ async function getWorkflowRunsFromHtml (
 
         for (const row of rows) {
           // 提取 Run ID 和 Status
-          // <a href="/NapNeko/NapCatQQ/actions/runs/20799940346" ... aria-label="completed successfully: ...">
+          // <a href="/owner/repo/actions/runs/123456789" ... aria-label="completed successfully: ...">
           const runMatch = new RegExp(`href="/${owner}/${repo}/actions/runs/(\\d+)"[^>]*aria-label="([^"]*)"`, 'i').exec(row);
 
           if (!runMatch || !runMatch[1] || !runMatch[2]) continue;

@@ -295,7 +295,7 @@ const ThemeConfigCard = () => {
 
   return (
     <>
-      <title>主题配置 - NapCat WebUI</title>
+      <title>主题配置 - neococo WebUI</title>
 
       {/* 顶部操作栏 */}
       <div className='w-full px-4 pt-4 pb-2'>

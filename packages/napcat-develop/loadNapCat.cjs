@@ -96,7 +96,7 @@ async function copyAll () {
   // 开发环境使用固定密钥
   process.env.NAPCAT_WEBUI_JWT_SECRET_KEY = 'napcat_dev_secret_key';
   process.env.NAPCAT_WEBUI_SECRET_KEY = 'napcatqq';
-  console.log('Loading NapCat module...');
+  console.log('Loading neococo module...');
   await import(pathToFileURL(NAPCAT_MJS_PATH).href);
 }
 

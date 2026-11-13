@@ -176,7 +176,7 @@ export const GeneratePasskeyRegistrationOptionsHandler: RequestHandler = async (
   try {
     // 使用固定用户ID，因为WebUI只有一个用户
     const userId = 'napcat-user';
-    const userName = 'NapCat User';
+    const userName = 'neococo User';
 
     // 从请求头获取host来确定RP_ID
     const host = _req.get('host') || 'localhost';
@@ -300,7 +300,7 @@ export const Get2FAStatusHandler: RequestHandler = async (_req, res) => {
 export const Generate2FASecretHandler: RequestHandler = async (_req, res) => {
   try {
     const secret = TotpHelper.generateSecret();
-    const qrCodeUrl = TotpHelper.generateQrCodeUrl(secret, 'NapCat WebUI', 'NapCat');
+    const qrCodeUrl = TotpHelper.generateQrCodeUrl(secret, 'neococo WebUI', 'neococo');
 
     return sendSuccess(res, {
       secret,

@@ -1,3 +1,3 @@
-# The Path of NapCatQQ
+# The Path of neococo
 
-Tiny WebUi Backend for NapCatQQ
+Tiny WebUI Backend for neococo

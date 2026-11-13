@@ -315,7 +315,7 @@ export default class QQManager {
   }
 
   // ============================================================
-  // NapCat 配置管理
+  // neococo 配置管理
   // ============================================================
 
   public static async getNapCatConfig () {

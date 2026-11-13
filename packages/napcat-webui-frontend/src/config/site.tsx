@@ -24,8 +24,8 @@ export interface MenuItem {
 }
 
 export const siteConfig = {
-  name: 'NapCat',
-  description: 'NapCat WebUI.',
+  name: 'neococo',
+  description: 'neococo WebUI.',
   navItems: [
     {
       label: '基础信息',
@@ -38,7 +38,7 @@ export const siteConfig = {
       href: '/network',
     },
     {
-      label: '猫猫日志',
+      label: '运行日志',
       icon: <LuFileText className='w-5 h-5' />,
       href: '/logs',
     },
@@ -88,8 +88,4 @@ export const siteConfig = {
       href: '/about',
     },
   ] as MenuItem[],
-  links: {
-    github: 'https://github.com/NapNeko/NapCatQQ',
-    docs: 'https://napcat.napneko.icu/',
-  },
 };

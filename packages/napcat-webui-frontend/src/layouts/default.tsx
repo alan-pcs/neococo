@@ -90,7 +90,7 @@ const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
                   setIsRestarting(false);
                   dialog.alert({
                     title: '启动超时',
-                    content: '后端在 15 秒内未响应，请检查 NapCat 运行日志或手动重启。',
+                    content: '后端在 15 秒内未响应，请检查 neococo 运行日志或手动重启。',
                   });
                 }
               );

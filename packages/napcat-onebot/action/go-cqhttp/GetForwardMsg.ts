@@ -164,7 +164,7 @@ export class GoCQHTTPGetForwardMsgAction extends OneBotAction<PayloadType, Retur
         }
       }
     }
-    // 说明消息已过期或者为内层消息 NapCat 一次返回不处理内层消息
+    // 说明消息已过期或者为内层消息 neococo 一次返回不处理内层消息
     throw new Error('消息已过期或者为内层消息，无法获取转发消息');
   }
 }

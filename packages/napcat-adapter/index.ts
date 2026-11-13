@@ -40,7 +40,7 @@ class OneBotAdapterWrapper implements IProtocolAdapter {
   }
 }
 
-// NapCat Protocol 适配器包装器
+// neococo Protocol 适配器包装器
 class NapCatProtocolAdapterWrapper implements IProtocolAdapter {
   readonly name = 'napcat-protocol';
   private adapter: NapCatProtocolAdapter;
@@ -100,7 +100,7 @@ export class NapCatAdapterManager {
       this.context.logger.logError('[AdapterManager] OneBot11 适配器初始化失败:', e);
     }
 
-    // 初始化 NapCat Protocol 适配器 (默认关闭，需要配置启用)
+    // 初始化 neococo Protocol 适配器 (默认关闭，需要配置启用)
     try {
       const napcatProtocol = new NapCatProtocolAdapter(this.core, this.context, this.pathWrapper);
       this.napcatProtocolAdapter = new NapCatProtocolAdapterWrapper(napcatProtocol);
@@ -108,12 +108,12 @@ export class NapCatAdapterManager {
 
       if (this.napcatProtocolAdapter.enabled) {
         await this.napcatProtocolAdapter.init();
-        this.context.logger.log('[AdapterManager] NapCat Protocol 适配器初始化完成');
+        this.context.logger.log('[AdapterManager] neococo Protocol 适配器初始化完成');
       } else {
-        this.context.logger.log('[AdapterManager] NapCat Protocol 适配器未启用，跳过初始化');
+        this.context.logger.log('[AdapterManager] neococo Protocol 适配器未启用，跳过初始化');
       }
     } catch (e) {
-      this.context.logger.logError('[AdapterManager] NapCat Protocol 适配器初始化失败:', e);
+      this.context.logger.logError('[AdapterManager] neococo Protocol 适配器初始化失败:', e);
     }
 
     this.context.logger.log(`[AdapterManager] 协议适配器初始化完成，已加载 ${this.adapters.size} 个适配器`);
@@ -124,7 +124,7 @@ export class NapCatAdapterManager {
     return this.onebotAdapter?.getAdapter() ?? null;
   }
 
-  // 获取 NapCat Protocol 适配器
+  // 获取 neococo Protocol 适配器
   getNapCatProtocolAdapter (): NapCatProtocolAdapter | null {
     return this.napcatProtocolAdapter?.getAdapter() ?? null;
   }

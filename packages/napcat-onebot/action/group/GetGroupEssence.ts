@@ -53,7 +53,7 @@ export class GetGroupEssence extends OneBotAction<PayloadType, ReturnType> {
   async _handle (payload: PayloadType, _adapter: string, config: NetworkAdapterConfig): Promise<ReturnType> {
     const msglist = (await this.core.apis.WebApi.getGroupEssenceMsgAll(payload.group_id.toString()))
       .flatMap((e) => e?.data?.msg_list)
-      // 在群精华回空的时候会出现[null]的情况~ https://github.com/NapNeko/NapCatQQ/issues/1334
+      // 在群精华回空的时候会出现[null]的情况~
       .filter(Boolean);
     if (!msglist) {
       throw new Error('获取失败');

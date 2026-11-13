@@ -28,7 +28,7 @@ if (fs.existsSync(envPath)) {
       }
     });
   } catch (e) {
-    console.log('[NapCat] Failed to load .env file:', e);
+    console.log('[neococo] Failed to load .env file:', e);
   }
 }
 const pathWrapper = new NapCatPathWrapper();
@@ -104,10 +104,10 @@ function forceKillProcess (pid: number): void {
       try {
         require('child_process').execSync(`taskkill /F /PID ${pid}`, { stdio: 'ignore' });
       } catch {
-        logger.logError(`[NapCat] [Process] 强制终止进程失败: PID ${pid}`);
+        logger.logError(`[neococo] [Process] 强制终止进程失败: PID ${pid}`);
       }
     } else {
-      logger.logError('[NapCat] [Process] 强制终止进程失败:', error);
+      logger.logError('[neococo] [Process] 强制终止进程失败:', error);
     }
   }
 }
@@ -136,7 +136,7 @@ async function cleanupOrphanedProcesses (excludePids: number[]): Promise<void> {
         // 尝试终止残留进程
         try {
           process.kill(pid, 'SIGTERM');
-          logger.log(`[NapCat] [Process] 已清理残留进程: PID ${pid} (${metric.type})`);
+          logger.log(`[neococo] [Process] 已清理残留进程: PID ${pid} (${metric.type})`);
         } catch {
           // 进程可能已经不存在，忽略错误
         }
@@ -144,7 +144,7 @@ async function cleanupOrphanedProcesses (excludePids: number[]): Promise<void> {
     }
   } catch (error) {
     // Electron API 不可用或出错，静默忽略
-    logger.logDebug?.('[NapCat] [Process] 清理残留进程时出错:', error);
+    logger.logDebug?.('[neococo] [Process] 清理残留进程时出错:', error);
   }
 }
 
@@ -155,7 +155,7 @@ export async function restartWorker (secretKey?: string, port?: number): Promise
   isRestarting = true;
 
   if (!currentWorker) {
-    logger.logWarn('[NapCat] [Process] 没有运行中的Worker进程');
+    logger.logWarn('[neococo] [Process] 没有运行中的Worker进程');
     await startWorker(false);
     isRestarting = false;
     return;
@@ -169,12 +169,12 @@ export async function restartWorker (secretKey?: string, port?: number): Promise
   // 2. 等待进程退出（最多 5 秒，给更多时间让进程自行清理）
   await new Promise<void>((resolve) => {
     const timeout = setTimeout(() => {
-      logger.logWarn('[NapCat] [Process] Worker进程未在 5 秒内退出，尝试发送强制关闭信号');
+      logger.logWarn('[neococo] [Process] Worker进程未在 5 秒内退出，尝试发送强制关闭信号');
       currentWorker?.postMessage({ type: 'shutdown' });
 
       // 再等待 2 秒
       setTimeout(() => {
-        logger.logWarn('[NapCat] [Process] Worker进程仍未退出，尝试 kill');
+        logger.logWarn('[neococo] [Process] Worker进程仍未退出，尝试 kill');
         currentWorker?.kill();
         resolve();
       }, 2000);
@@ -188,11 +188,11 @@ export async function restartWorker (secretKey?: string, port?: number): Promise
 
   // 3. 二次确认进程是否真的被终止（兜底检查）
   if (workerPid && isProcessAlive(workerPid)) {
-    logger.logWarn(`[NapCat] [Process] 进程 ${workerPid} 仍在运行，尝试强制杀掉`);
+    logger.logWarn(`[neococo] [Process] 进程 ${workerPid} 仍在运行，尝试强制杀掉`);
     forceKillProcess(workerPid);
     await new Promise(resolve => setTimeout(resolve, 1000));
     if (isProcessAlive(workerPid)) {
-      logger.logError(`[NapCat] [Process] 进程 ${workerPid} 无法终止，可能需要手动处理`);
+      logger.logError(`[neococo] [Process] 进程 ${workerPid} 无法终止，可能需要手动处理`);
     }
   }
 
@@ -272,10 +272,10 @@ async function startWorker (passQuickLogin: boolean = true, secretKey?: string, 
       const message = msg as WorkerMessage;
       if (message.type === 'restart') {
         restartWorker(message.secretKey, message.port).catch(e => {
-          logger.logError(`[NapCat] [${processType}] 重启Worker进程失败:`, e);
+          logger.logError(`[neococo] [${processType}] 重启Worker进程失败:`, e);
         });
       } else if (message.type === 'login-success') {
-        logger.log(`[NapCat] [${processType}] Worker进程已登录成功，切换到正常重试策略`);
+        logger.log(`[neococo] [${processType}] Worker进程已登录成功，切换到正常重试策略`);
       }
     }
   });
@@ -284,7 +284,7 @@ async function startWorker (passQuickLogin: boolean = true, secretKey?: string, 
   child.on('exit', (code: unknown) => {
     const exitCode = typeof code === 'number' ? code : 0;
     if (exitCode !== 0) {
-      logger.logError(`[NapCat] [${processType}] Worker进程退出，退出码: ${exitCode}`);
+      logger.logError(`[neococo] [${processType}] Worker进程退出，退出码: ${exitCode}`);
     }
     // 如果不是由于主动重启或关闭引起的退出，尝试自动重新拉起
     if (!isRestarting && !isShuttingDown) {
@@ -299,14 +299,14 @@ async function startWorker (passQuickLogin: boolean = true, secretKey?: string, 
       recentCrashTimestamps.push(now);
 
       if (recentCrashTimestamps.length >= MAX_CRASHES_IN_WINDOW) {
-        logger.logError(`[NapCat] [${processType}] Worker进程在 ${CRASH_TIME_WINDOW / 1000} 秒内异常退出 ${MAX_CRASHES_IN_WINDOW} 次，主进程退出`);
+        logger.logError(`[neococo] [${processType}] Worker进程在 ${CRASH_TIME_WINDOW / 1000} 秒内异常退出 ${MAX_CRASHES_IN_WINDOW} 次，主进程退出`);
         process.exit(1);
       }
 
-      logger.logWarn(`[NapCat] [${processType}] Worker进程意外退出 (${recentCrashTimestamps.length}/${MAX_CRASHES_IN_WINDOW})，正在尝试重新拉起...`);
+      logger.logWarn(`[neococo] [${processType}] Worker进程意外退出 (${recentCrashTimestamps.length}/${MAX_CRASHES_IN_WINDOW})，正在尝试重新拉起...`);
 
       startWorker(true).catch(e => {
-        logger.logError(`[NapCat] [${processType}] 重新拉起Worker进程失败:`, e);
+        logger.logError(`[neococo] [${processType}] 重新拉起Worker进程失败:`, e);
       });
     }
   });
@@ -319,7 +319,7 @@ async function startWorker (passQuickLogin: boolean = true, secretKey?: string, 
     };
     const onError = (...args: unknown[]) => {
       const err = args[0] as Error;
-      logger.logError(`[NapCat] [${processType}] Worker进程启动失败:`, err);
+      logger.logError(`[neococo] [${processType}] Worker进程启动失败:`, err);
       child.off('spawn', onSpawn);
       reject(err);
     };
@@ -374,9 +374,9 @@ async function startWorkerProcess (): Promise<void> {
     try {
       const os = await import('os');
       process.dlopen({ exports: {} }, preloadAddonPath, os.constants.dlopen.RTLD_NOW | os.constants.dlopen.RTLD_GLOBAL);
-      logger.log(`[NapCat] [Worker] 已预加载 Node Addon: ${preloadAddonPath}`);
+      logger.log(`[neococo] [Worker] 已预加载 Node Addon: ${preloadAddonPath}`);
     } catch (error) {
-      logger.logError(`[NapCat] [Worker] 预加载 Node Addon 失败: ${preloadAddonPath}`, error);
+      logger.logError(`[neococo] [Worker] 预加载 Node Addon 失败: ${preloadAddonPath}`, error);
     }
   }
 
@@ -406,7 +406,7 @@ async function startWorkerProcess (): Promise<void> {
         return { result: false, message: '无法与主进程通信' };
       }
     } catch (e) {
-      logger.logError('[NapCat] [Process] 发送重启请求失败:', e);
+      logger.logError('[neococo] [Process] 发送重启请求失败:', e);
       return {
         result: false,
         message: '发送重启请求失败: ' + (e as Error).message,
@@ -414,7 +414,7 @@ async function startWorkerProcess (): Promise<void> {
     }
   });
 
-  // 启动 NapCat 核心
+  // 启动 neococo 核心
   await NCoreInitShell();
 }
 
@@ -443,6 +443,6 @@ async function main (): Promise<void> {
 
 // 启动应用
 main().catch((e: Error) => {
-  logger.logError('[NapCat] [Process] 启动失败:', e);
+  logger.logError('[neococo] [Process] 启动失败:', e);
   process.exit(1);
 });

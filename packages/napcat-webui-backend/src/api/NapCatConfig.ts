@@ -9,7 +9,7 @@ import json5 from 'json5';
 import { Value } from '@sinclair/typebox/value';
 import { NapcatConfigSchema } from '@/napcat-core/helper/config';
 
-// 动态获取 NapCat 配置默认值
+// 动态获取 neococo 配置默认值
 function getDefaultNapcatConfig (): Record<string, unknown> {
   const data = {};
   return Value.Parse(NapcatConfigSchema, data) as Record<string, unknown>;
@@ -47,7 +47,7 @@ function writeNapcatConfig (config: Record<string, unknown>): void {
   writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
 }
 
-// 获取 NapCat 配置
+// 获取 neococo 配置
 export const NapCatGetConfigHandler: RequestHandler = (_, res) => {
   try {
     const config = readNapcatConfig();
@@ -57,7 +57,7 @@ export const NapCatGetConfigHandler: RequestHandler = (_, res) => {
   }
 };
 
-// 设置 NapCat 配置
+// 设置 neococo 配置
 export const NapCatSetConfigHandler: RequestHandler = (req, res) => {
   try {
     const newConfig = req.body;
@@ -112,7 +112,7 @@ function writeUinConfig (uin: string, config: Record<string, unknown>): void {
   writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
 }
 
-// 获取 per-uin NapCat 配置
+// 获取 per-uin neococo 配置
 export const NapCatGetUinConfigHandler: RequestHandler = (_, res) => {
   try {
     const isLogin = WebUiDataRuntime.getQQLoginStatus();
@@ -124,7 +124,7 @@ export const NapCatGetUinConfigHandler: RequestHandler = (_, res) => {
   }
 };
 
-// 设置 per-uin NapCat 配置
+// 设置 per-uin neococo 配置
 export const NapCatSetUinConfigHandler: RequestHandler = (req, res) => {
   try {
     const isLogin = WebUiDataRuntime.getQQLoginStatus();

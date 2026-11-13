@@ -17,7 +17,7 @@ interface PasskeyCredential {
   transports?: AuthenticatorTransportFuture[];
 }
 
-const RP_NAME = 'NapCat WebUI';
+const RP_NAME = 'neococo WebUI';
 
 export class PasskeyHelper {
   private static getPasskeyFilePath (): string {

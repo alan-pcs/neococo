@@ -14,7 +14,7 @@
  * - Linux/Unix 路径：/home/user/folder/file (使用 / 作为分隔符)
  *
  * 示例：
- * - Windows: D:\NapCat.Shell-1\NapCat.Shell-2\...\data → D:\NapCat.Shell-1\...\napcat-plugin-builtin\data
+ * - Windows: D:\install-dir\build-1\...\data → D:\install-dir\...\napcat-plugin-builtin\data
  * - Linux: /home/user/projects/napcat/plugins/data → /home/user/...\plugins/data
  */
 

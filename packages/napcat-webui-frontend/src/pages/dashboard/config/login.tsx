@@ -93,7 +93,7 @@ const LoginConfigCard = () => {
         },
         () => {
           setIsRestarting(false);
-          toast.error('后端在 30 秒内未响应，请检查 NapCat 运行日志');
+          toast.error('后端在 30 秒内未响应，请检查 neococo 运行日志');
         }
       );
 
@@ -115,7 +115,7 @@ const LoginConfigCard = () => {
 
   return (
     <>
-      <title>登录配置 - NapCat WebUI</title>
+      <title>登录配置 - neococo WebUI</title>
       <div className='flex-shrink-0 w-full font-bold text-default-600 dark:text-default-400 px-1'>快速登录QQ</div>
       <Controller
         control={control}

@@ -244,7 +244,7 @@ export interface ReplyElement {
   replyMsgTime?: string;
   replyMsgClientSeq?: string;
   // HACK: Attributes that were not originally available,
-  // but were added due to NTQQ and NapCat's internal implementation, are used to supplement NapCat
+  // but were added due to NTQQ and neococo's internal implementation, are used to supplement neococo
   _replyMsgPeer?: Peer;
 }
 

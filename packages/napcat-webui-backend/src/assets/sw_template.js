@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /**
- * NapCat WebUI Service Worker
+ * neococo WebUI Service Worker
  *
  * 路由缓存策略设计：
  *

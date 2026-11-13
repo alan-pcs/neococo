@@ -92,18 +92,18 @@ function scanFilesRecursively (dirPath: string, basePath: string = dirPath): Arr
  * 下载文件（带进度和重试）
  */
 async function downloadFile (url: string, dest: string): Promise<void> {
-  webUiLogger?.log('[NapCat Update] Starting download from:', url);
+  webUiLogger?.log('[neococo Update] Starting download from:', url);
   const file = fs.createWriteStream(dest);
 
   return new Promise((resolve, reject) => {
     const request = https.get(url, {
       headers: { 'User-Agent': 'NapCat-WebUI' },
     }, (res) => {
-      webUiLogger?.log('[NapCat Update] Response status:', res.statusCode);
-      webUiLogger?.log('[NapCat Update] Content-Type:', res.headers['content-type']);
+      webUiLogger?.log('[neococo Update] Response status:', res.statusCode);
+      webUiLogger?.log('[neococo Update] Content-Type:', res.headers['content-type']);
 
       if (res.statusCode === 302 || res.statusCode === 301) {
-        webUiLogger?.log('[NapCat Update] Following redirect to:', res.headers.location);
+        webUiLogger?.log('[neococo Update] Following redirect to:', res.headers.location);
         file.close();
         fs.unlinkSync(dest);
         downloadFile(res.headers.location!, dest).then(resolve).catch(reject);
@@ -120,13 +120,13 @@ async function downloadFile (url: string, dest: string): Promise<void> {
       res.pipe(file);
       file.on('finish', () => {
         file.close();
-        webUiLogger?.log('[NapCat Update] Download completed');
+        webUiLogger?.log('[neococo Update] Download completed');
         resolve();
       });
     });
 
     request.on('error', (err) => {
-      webUiLogger?.logError('[NapCat Update] Download error:', err);
+      webUiLogger?.logError('[neococo Update] Download error:', err);
       file.close();
       fs.unlink(dest, () => { });
       reject(err);
@@ -145,7 +145,7 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
     // 确定目标版本 tag
     // 如果指定了版本，使用指定版本；否则使用 'latest'
     const targetTag = targetVersion || 'latest';
-    webUiLogger?.log(`[NapCat Update] Target version: ${targetTag}`);
+    webUiLogger?.log(`[neococo Update] Target version: ${targetTag}`);
 
     // 检查是否是 action 临时版本
     const isActionVersion = targetTag.startsWith('action-');
@@ -159,7 +159,7 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
         throw new Error(`Invalid action version format: ${targetTag}`);
       }
 
-      webUiLogger?.log(`[NapCat Update] Downloading action artifact from run: ${runId}`);
+      webUiLogger?.log(`[neococo Update] Downloading action artifact from run: ${runId}`);
 
       // 根据当前工作环境确定 artifact 名称
       const artifactName = ReleaseName.replace('.zip', ''); // NapCat.Framework 或 NapCat.Shell
@@ -169,7 +169,7 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
       const baseUrl = `https://nightly.link/NapNeko/NapCatQQ/actions/runs/${runId}/${artifactName}.zip`;
       actualVersion = targetTag;
 
-      webUiLogger?.log(`[NapCat Update] Action artifact URL: ${baseUrl}`);
+      webUiLogger?.log(`[neococo Update] Action artifact URL: ${baseUrl}`);
 
       // 使用 mirror 模块查找可用的 nightly.link 镜像
       try {
@@ -179,10 +179,10 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
           timeout: 10000,
           customMirror: mirror,
         });
-        webUiLogger?.log(`[NapCat Update] Using download URL: ${downloadUrl}`);
+        webUiLogger?.log(`[neococo Update] Using download URL: ${downloadUrl}`);
       } catch (_error) {
         // 如果镜像都不可用，直接使用原始 URL
-        webUiLogger?.logWarn('[NapCat Update] All nightly.link mirrors failed, using original URL');
+        webUiLogger?.logWarn('[neococo Update] All nightly.link mirrors failed, using original URL');
         downloadUrl = baseUrl;
       }
     } else {
@@ -214,7 +214,7 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
 
     // 检查是否需要强制更新（降级警告）
     const currentVersion = WebUiDataRuntime.GetNapCatVersion();
-    webUiLogger?.log(`[NapCat Update] Current version: ${currentVersion}, Target version: ${actualVersion}`);
+    webUiLogger?.log(`[neococo Update] Current version: ${currentVersion}, Target version: ${actualVersion}`);
 
     if (!force && currentVersion && !isActionVersion) {
       // 简单的版本比较（可选的降级保护）
@@ -232,12 +232,12 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
         (targetMajor === currMajor && targetMinor === currMinor && targetPatch < currPatch);
 
       if (isDowngrade) {
-        webUiLogger?.log(`[NapCat Update] Downgrade from ${currentVersion} to ${actualVersion}, force=${force}`);
+        webUiLogger?.log(`[neococo Update] Downgrade from ${currentVersion} to ${actualVersion}, force=${force}`);
         // 不阻止降级，只是记录日志
       }
     }
 
-    webUiLogger?.log(`[NapCat Update] Updating to version: ${actualVersion}`);
+    webUiLogger?.log(`[neococo Update] Updating to version: ${actualVersion}`);
 
     // 创建临时目录
     const tempDir = path.join(webUiPathWrapper.binaryPath, './temp');
@@ -245,20 +245,20 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
       fs.mkdirSync(tempDir, { recursive: true });
     }
 
-    webUiLogger?.log(`[NapCat Update] Using download URL: ${downloadUrl}`);
+    webUiLogger?.log(`[neococo Update] Using download URL: ${downloadUrl}`);
 
     // 下载zip
     const zipPath = path.join(tempDir, 'napcat-latest.zip');
-    webUiLogger?.log('[NapCat Update] Saving to:', zipPath);
+    webUiLogger?.log('[neococo Update] Saving to:', zipPath);
     await downloadFile(downloadUrl, zipPath);
 
     // 检查文件大小
     const stats = fs.statSync(zipPath);
-    webUiLogger?.log('[NapCat Update] Downloaded file size:', stats.size, 'bytes');
+    webUiLogger?.log('[neococo Update] Downloaded file size:', stats.size, 'bytes');
 
     // 解压到临时目录
     const extractPath = path.join(tempDir, 'napcat-extract');
-    webUiLogger?.log('[NapCat Update] Extracting to:', extractPath);
+    webUiLogger?.log('[neococo Update] Extracting to:', extractPath);
     await compressing.zip.uncompress(zipPath, extractPath);
 
     // 获取解压后的实际内容目录（NapCat.Shell.zip直接包含文件，无额外根目录）
@@ -279,7 +279,7 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
         // 防止路径穿越攻击：确保目标路径严格位于 binaryPath 子目录内
         const targetFilePath = path.resolve(webUiPathWrapper.binaryPath, fileInfo.relativePath);
         if (!targetFilePath.startsWith(resolvedBinaryPath + path.sep)) {
-          webUiLogger?.logWarn(`[NapCat Update] Skipping suspicious path: ${fileInfo.relativePath}`);
+          webUiLogger?.logWarn(`[neococo Update] Skipping suspicious path: ${fileInfo.relativePath}`);
           continue;
         }
 
@@ -287,13 +287,13 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
 
         // 跳过指定的文件
         if (SKIP_UPDATE_FILES.includes(path.basename(fileInfo.relativePath))) {
-          webUiLogger?.log(`[NapCat Update] Skipping update for ${fileInfo.relativePath}`);
+          webUiLogger?.log(`[neococo Update] Skipping update for ${fileInfo.relativePath}`);
           continue;
         }
 
         // 保留已存在的用户配置文件，避免覆盖用户设置
         if (PRESERVE_USER_CONFIG_RELATIVE_PATHS.has(normalizedRelativePath) && fs.existsSync(targetFilePath)) {
-          webUiLogger?.log(`[NapCat Update] Preserving existing user config: ${fileInfo.relativePath}`);
+          webUiLogger?.log(`[neococo Update] Preserving existing user config: ${fileInfo.relativePath}`);
           continue;
         }
 
@@ -311,7 +311,7 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
           fs.copyFileSync(fileInfo.sourcePath, targetFilePath);
         } catch (error) {
           // 如果替换失败，添加到失败列表
-          webUiLogger?.logError(`[NapCat Update] Failed to update ${targetFilePath}, will retry on next startup:`, error);
+          webUiLogger?.logError(`[neococo Update] Failed to update ${targetFilePath}, will retry on next startup:`, error);
           failedFiles.push({
             sourcePath: fileInfo.sourcePath,
             targetPath: targetFilePath,
@@ -331,7 +331,7 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
         // 保存更新配置文件
         const configPath = path.join(webUiPathWrapper.configPath, 'napcat-update.json');
         fs.writeFileSync(configPath, JSON.stringify(updateConfig, null, 2));
-        webUiLogger?.log(`[NapCat Update] Update config saved for ${failedFiles.length} failed files: ${configPath}`);
+        webUiLogger?.log(`[neococo Update] Update config saved for ${failedFiles.length} failed files: ${configPath}`);
       }
 
       // 发送成功响应
@@ -345,11 +345,11 @@ export const UpdateNapCatHandler: RequestHandler = async (req, res) => {
         failedFilesCount: failedFiles.length,
       });
     } catch (error) {
-      webUiLogger?.logError('[NapCat Update] 更新失败:', error);
+      webUiLogger?.logError('[neococo Update] 更新失败:', error);
       sendError(res, '更新失败: ' + (error instanceof Error ? error.message : '未知错误'));
     }
   } catch (error: any) {
-    webUiLogger?.logError('[NapCat Update] 更新失败:', error);
+    webUiLogger?.logError('[neococo Update] 更新失败:', error);
     sendError(res, '更新失败: ' + error.message);
   }
 };
@@ -363,12 +363,12 @@ export async function applyPendingUpdates (webUiPathWrapper: NapCatPathWrapper, 
   const configPath = path.join(webUiPathWrapper.configPath, 'napcat-update.json');
 
   if (!fs.existsSync(configPath)) {
-    // logger.log('[NapCat Update] No pending updates found');
+    // logger.log('[neococo Update] No pending updates found');
     return;
   }
 
   try {
-    logger.log('[NapCat Update] Applying pending updates...');
+    logger.log('[neococo Update] Applying pending updates...');
     const updateConfig: UpdateConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
     const remainingFiles: Array<{
@@ -380,7 +380,7 @@ export async function applyPendingUpdates (webUiPathWrapper: NapCatPathWrapper, 
       try {
         // 检查源文件是否存在
         if (!fs.existsSync(file.sourcePath)) {
-          logger.logWarn(`[NapCat Update] Source file not found: ${file.sourcePath}`);
+          logger.logWarn(`[neococo Update] Source file not found: ${file.sourcePath}`);
           continue;
         }
 
@@ -395,9 +395,9 @@ export async function applyPendingUpdates (webUiPathWrapper: NapCatPathWrapper, 
           fs.unlinkSync(file.targetPath); // 删除旧文件
         }
         fs.copyFileSync(file.sourcePath, file.targetPath);
-        logger.log(`[NapCat Update] Updated ${path.basename(file.targetPath)} on startup`);
+        logger.log(`[neococo Update] Updated ${path.basename(file.targetPath)} on startup`);
       } catch (error) {
-        logger.logError(`[NapCat Update] Failed to update ${file.targetPath} on startup:`, error);
+        logger.logError(`[neococo Update] Failed to update ${file.targetPath} on startup:`, error);
         // 如果仍然失败，保留在列表中
         remainingFiles.push(file);
       }
@@ -410,13 +410,13 @@ export async function applyPendingUpdates (webUiPathWrapper: NapCatPathWrapper, 
         files: remainingFiles,
       };
       fs.writeFileSync(configPath, JSON.stringify(updatedConfig, null, 2));
-      logger.log(`[NapCat Update] ${remainingFiles.length} files still pending update`);
+      logger.log(`[neococo Update] ${remainingFiles.length} files still pending update`);
     } else {
       // 所有文件都成功更新，删除配置文件
       fs.unlinkSync(configPath);
-      logger.log('[NapCat Update] All pending updates applied successfully');
+      logger.log('[neococo Update] All pending updates applied successfully');
     }
   } catch (error) {
-    logger.logError('[NapCat Update] Failed to apply pending updates:', error);
+    logger.logError('[neococo Update] Failed to apply pending updates:', error);
   }
 }

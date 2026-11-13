@@ -45,13 +45,13 @@ import { migrateLegacyGlobalPath } from './global-migrate';
 import { getDataPaths } from './data-path';
 import { connectToNamedPipe } from './pipe';
 
-// NapCat Shell App ES 入口文件
+// neococo Shell App ES 入口文件
 async function handleUncaughtExceptions (logger: LogWrapper) {
   process.on('uncaughtException', (err) => {
-    logger.logError('[NapCat] [Error] Unhandled Exception:', err.message);
+    logger.logError('[neococo] [Error] Unhandled Exception:', err.message);
   });
   process.on('unhandledRejection', (reason) => {
-    logger.logError('[NapCat] [Error] unhandledRejection:', reason);
+    logger.logError('[neococo] [Error] unhandledRejection:', reason);
   });
 }
 
@@ -623,7 +623,7 @@ async function waitForNetworkConnection (loginService: NodeIKernelLoginService, 
 }
 
 export async function NCoreInitShell () {
-  console.log('NapCat Shell App Loading...');
+  console.log('neococo Shell App Loading...');
   const pathWrapper = new NapCatPathWrapper();
   const logger = new LogWrapper(pathWrapper.logsPath);
   if (process.env['NAPCAT_WORKER_PROCESS'] !== '1' && process.env['NAPCAT_DISABLE_MULTI_PROCESS'] !== '1' && process.env['NAPCAT_DISABLE_MULTIPROCESSING'] !== '1') {
@@ -659,11 +659,11 @@ export async function NCoreInitShell () {
         const body = new NapProtoMsg(OidbSvcTrpcTcp0XCDE_2RespBody).decode(base.body);
         if (body.inner?.value) {
           dbPassphrase = body.inner.value;
-          logger.log('[NapCat] 已启用数据库辅助支持能力');
+          logger.log('[neococo] 已启用数据库辅助支持能力');
         }
       }
     } catch (e) {
-      logger.logError('[NapCat] [0xCDE_2] 解析失败:', e);
+      logger.logError('[neococo] [0xCDE_2] 解析失败:', e);
     }
   });
 
@@ -675,13 +675,13 @@ export async function NCoreInitShell () {
     const bypassOptions = napcatConfig.bypass ?? {};
     napi2nativeLoader.nativeExports.enableAllBypasses?.(bypassOptions);
   } else {
-    logger.log('[NapCat] Napi2NativeLoader: Bypass已通过环境变量禁用');
+    logger.log('[neococo] Napi2NativeLoader: Bypass已通过环境变量禁用');
   }
 
   const o3Service = wrapper.NodeIO3MiscService.get();
   o3Service.addO3MiscListener(new NodeIO3MiscListener());
 
-  logger.log('[NapCat] [Core] NapCat.Core Version: ' + napCatVersion);
+  logger.log('[neococo] [Core] neococo Core Version: ' + napCatVersion);
   WebUiDataRuntime.setWorkingEnv(NapCatCoreWorkingEnv.Shell);
   InitWebUi(logger, pathWrapper, logSubscription, statusHelperSubscription).then().catch(e => logger.logError(e));
   const engine = wrapper.NodeIQQNTWrapperEngine.get();
@@ -732,7 +732,7 @@ export async function NCoreInitShell () {
   // 登录成功后通知 Master 进程（用于切换崩溃重试策略）
   if (typeof process.send === 'function') {
     process.send({ type: 'login-success' });
-    logger.log('[NapCat] 已通知主进程登录成功');
+    logger.log('[neococo] 已通知主进程登录成功');
   }
 
   const amgomDataPiece = 'eb1fd6ac257461580dc7438eb099f23aae04ca679f4d88f53072dc56e3bb1129';
@@ -820,10 +820,10 @@ export class NapCatShell {
     //     try {
     //       const result = dbApi.readDatabase('nt_msg.db');
     //       if (result) {
-    //         this.context.logger.log('[NapCat] [Database] nt_msg.db:\n' + dbApi.formatResults([result]));
+    //         this.context.logger.log('[neococo] [Database] nt_msg.db:\n' + dbApi.formatResults([result]));
     //       }
     //     } catch (e) {
-    //       this.context.logger.logError('[NapCat] [Database] 读取失败:', e);
+    //       this.context.logger.logError('[neococo] [Database] 读取失败:', e);
     //     }
     //   }
     // }

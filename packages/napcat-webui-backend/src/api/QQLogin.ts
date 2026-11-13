@@ -376,7 +376,7 @@ export const QQCreateGUIDBackupHandler: RequestHandler = async (_, res) => {
   }
 };
 
-// 重启NapCat
+// 重启 neococo
 export const QQRestartNapCatHandler: RequestHandler = async (_, res) => {
   try {
     const result = await WebUiDataRuntime.requestRestartProcess();

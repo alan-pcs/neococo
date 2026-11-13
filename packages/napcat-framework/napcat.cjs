@@ -47,8 +47,8 @@ function callInitCallback (callback) {
   try {
     callback();
   } catch (error) {
-    // NapCat 的回调不能中断 QQ 自己的初始化回调。
-    console.log('[NapCat] [Error] 初始化回调失败', error);
+    // neococo 的回调不能中断 QQ 自己的初始化回调。
+    console.log('[neococo] [Error] 初始化回调失败', error);
   }
 }
 
@@ -91,7 +91,7 @@ function captureSession (session) {
   if (!session || typeof session.init !== 'function') {
     if (!warnedMissingSession) {
       warnedMissingSession = true;
-      console.log('[NapCat] [Warn] QQ 尚未返回有效 Session，等待 QQ 后续创建会话');
+      console.log('[neococo] [Warn] QQ 尚未返回有效 Session，等待 QQ 后续创建会话');
     }
     return session;
   }
@@ -137,14 +137,14 @@ function clearHook () {
 }
 
 async function initializeNapCat () {
-  console.log('[NapCat] [Info] 开始初始化NapCat');
+  console.log('[neococo] [Info] 开始初始化 neococo');
   try {
     const currentPath = path.dirname(__filename);
     const { NCoreInitFramework, getWebUiUrl } = await import(pathToFileURL(path.join(currentPath, './napcat.mjs')).href);
     getWebUiUrlFunc = getWebUiUrl;
     await NCoreInitFramework(sessionPromise, wrapperLoginService, registerInitCallback);
   } catch (error) {
-    console.log('[NapCat] [Error] 初始化NapCat', error);
+    console.log('[neococo] [Error] 初始化 neococo', error);
   }
 }
 
@@ -162,7 +162,7 @@ process.dlopen = function (module, filename, flags = os.constants.dlopen.RTLD_LA
   });
 
   // 先安装拦截，再异步加载 Framework。会话由 QQ 创建，不调用已移除的工厂或抢跑初始化。
-  initializeNapCat().catch(error => console.log('[NapCat] [Error] 初始化NapCat', error));
+  initializeNapCat().catch(error => console.log('[neococo] [Error] 初始化 neococo', error));
 
   return dlopenRet;
 };
@@ -170,7 +170,7 @@ process.dlopen = function (module, filename, flags = os.constants.dlopen.RTLD_LA
 module.exports = {
   NCgetWebUiUrl: async () => {
     if (!getWebUiUrlFunc) {
-      console.log('[NapCat] [Error] 未初始化完成');
+      console.log('[neococo] [Error] 未初始化完成');
       return '';
     }
     return await getWebUiUrlFunc();

@@ -23,7 +23,7 @@ class TerminalManager {
   private wss: WebSocketServer | null = null;
 
   initialize (req: any, socket: any, head: any, logger?: ILogWrapper) {
-    logger?.log('[NapCat] [WebUi] terminal websocket initialized');
+    logger?.log('[neococo] [WebUi] terminal websocket initialized');
     this.wss = new WebSocketServer({
       noServer: true,
       verifyClient: async (info, cb) => {

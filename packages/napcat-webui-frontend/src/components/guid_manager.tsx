@@ -465,7 +465,7 @@ const GUIDManager: React.FC<GUIDManagerProps> = ({ showRestart = true, compact =
   const handleRestart = () => {
     dialog.confirm({
       title: '确认重启',
-      content: '确定要重启 NapCat 吗？这将导致当前连接断开。',
+      content: '确定要重启 neococo 吗？这将导致当前连接断开。',
       confirmText: '重启',
       cancelText: '取消',
       onConfirm: async () => {
@@ -635,7 +635,7 @@ const GUIDManager: React.FC<GUIDManagerProps> = ({ showRestart = true, compact =
             </Button>
           </div>
           <div className='text-xs text-default-400'>
-            修改 machine_id 后 GUID 将变化，需重启 NapCat 才能生效，操作前会自动备份
+            修改 machine_id 后 GUID 将变化，需重启 neococo 才能生效，操作前会自动备份
           </div>
         </div>
 
@@ -681,7 +681,7 @@ const GUIDManager: React.FC<GUIDManagerProps> = ({ showRestart = true, compact =
               onPress={handleRestart}
               startContent={<MdRefresh size={16} />}
             >
-              重启 NapCat
+              重启 neococo
             </Button>
           </>
         )}
@@ -848,7 +848,7 @@ const GUIDManager: React.FC<GUIDManagerProps> = ({ showRestart = true, compact =
             </Button>
           </div>
           <div className='text-xs text-default-400'>
-            修改 MAC 后 GUID 将变化，需重启 NapCat 才能生效，操作前会自动备份
+            修改 MAC 后 GUID 将变化，需重启 neococo 才能生效，操作前会自动备份
           </div>
         </div>
 
@@ -894,7 +894,7 @@ const GUIDManager: React.FC<GUIDManagerProps> = ({ showRestart = true, compact =
               onPress={handleRestart}
               startContent={<MdRefresh size={16} />}
             >
-              重启 NapCat
+              重启 neococo
             </Button>
           </>
         )}
@@ -997,7 +997,7 @@ const GUIDManager: React.FC<GUIDManagerProps> = ({ showRestart = true, compact =
           </Button>
         </div>
         <div className='text-xs text-default-400'>
-          修改或删除 GUID 后需重启 NapCat 才能生效，操作前会自动备份
+          修改或删除 GUID 后需重启 neococo 才能生效，操作前会自动备份
         </div>
       </div>
 
@@ -1043,7 +1043,7 @@ const GUIDManager: React.FC<GUIDManagerProps> = ({ showRestart = true, compact =
             onPress={handleRestart}
             startContent={<MdRefresh size={16} />}
           >
-            重启 NapCat
+            重启 neococo
           </Button>
         </>
       )}

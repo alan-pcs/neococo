@@ -1,6 +1,5 @@
 import { Button } from '@heroui/button';
 import { CardBody, CardHeader } from '@heroui/card';
-import { Image } from '@heroui/image';
 import { Input } from '@heroui/input';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef, useState } from 'react';
@@ -8,7 +7,6 @@ import { toast } from 'react-hot-toast';
 import { IoKeyOutline, IoArrowBack } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
-import logo from '@/assets/images/logo.png';
 
 import key from '@/const/key';
 
@@ -228,7 +226,7 @@ export default function WebLoginPage () {
 
   return (
     <>
-      <title>WebUI登录 - NapCat WebUI</title>
+      <title>WebUI登录 - neococo WebUI</title>
       <PureLayout>
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -243,7 +241,7 @@ export default function WebLoginPage () {
           >
             <CardHeader className='inline-block max-w-lg text-center justify-center'>
               <div className='flex items-center justify-center w-full gap-2 pt-10'>
-                <Image alt='logo' height='7em' src={logo} />
+                <span className={title({ color: 'violet' })}>neococo</span>
                 <div>
                   <span className={title()}>Web&nbsp;</span>
                   <span className={title({ color: 'violet' })}>
@@ -392,7 +390,7 @@ export default function WebLoginPage () {
                       />
                     </form>
                     <div className='text-center text-small text-default-600 dark:text-default-400 px-2'>
-                      💡 提示：请从 NapCat 启动日志中查看登录密钥
+                      💡 提示：请从 neococo 启动日志中查看登录密钥
                     </div>
                     <Button
                       className='mx-10 mt-10 text-lg py-7'
@@ -403,16 +401,6 @@ export default function WebLoginPage () {
                       variant='shadow'
                       onPress={onSubmitToken}
                     >
-                      {!isLoading && (
-                        <Image
-                          alt='logo'
-                          classNames={{
-                            wrapper: '-ml-8',
-                          }}
-                          height='2em'
-                          src={logo}
-                        />
-                      )}
                       登录
                     </Button>
                   </>

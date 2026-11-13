@@ -3,7 +3,7 @@
  *
  * 功能：
  *   1. 将 CI 构建产物（Framework / Shell）打包为 zip
- *   2. 从 NapCat-Installer 仓库拉取 install.sh 并替换下载链接
+ *   2. 从安装脚本仓库拉取 install.sh 并替换下载链接
  *   3. 发布到 napcat-pr-release 仓库的 GitHub Release
  *
  * 环境变量：

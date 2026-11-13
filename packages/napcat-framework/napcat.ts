@@ -28,14 +28,14 @@ export async function NCoreInitFramework (
   registerInitCallback: (callback: () => void) => void
 ) {
   // 在进入本层前是否登录未进行判断
-  console.log('NapCat Framework App Loading...');
+  console.log('neococo Framework App Loading...');
 
   process.on('uncaughtException', (err) => {
-    console.log('[NapCat] [Error] Unhandled Exception:', err.message);
+    console.log('[neococo] [Error] Unhandled Exception:', err.message);
   });
 
   process.on('unhandledRejection', (reason) => {
-    console.log('[NapCat] [Error] unhandledRejection:', reason);
+    console.log('[neococo] [Error] unhandledRejection:', reason);
   });
 
   const pathWrapper = new NapCatPathWrapper();
@@ -47,16 +47,16 @@ export async function NCoreInitFramework (
   const nativePacketHandler = new NativePacketHandler({ logger }); // 初始化 NativePacketHandler 用于后续使用
   const napi2nativeLoader = new Napi2NativeLoader({ logger }); // 初始化 Napi2NativeLoader 用于后续使用
   const napcatConfig = loadNapcatConfig(pathWrapper.configPath);
-  // console.log('[NapCat] [Napi2NativeLoader]', napi2nativeLoader.nativeExports.enableAllBypasses?.());
+  // console.log('[neococo] [Napi2NativeLoader]', napi2nativeLoader.nativeExports.enableAllBypasses?.());
   if (process.env['NAPCAT_DISABLE_BYPASS'] !== '1') {
     const bypassOptions = napcatConfig.bypass ?? {};
     const bypassEnabled = napi2nativeLoader.nativeExports.enableAllBypasses?.(bypassOptions);
     if (bypassEnabled) {
-      logger.log('[NapCat] Napi2NativeLoader: 已启用Bypass');
+      logger.log('[neococo] Napi2NativeLoader: 已启用Bypass');
     }
-    logger.log('[NapCat] Napi2NativeLoader: Framework模式Bypass配置:', bypassOptions);
+    logger.log('[neococo] Napi2NativeLoader: Framework模式Bypass配置:', bypassOptions);
   } else {
-    logger.log('[NapCat] Napi2NativeLoader: Bypass已通过环境变量禁用');
+    logger.log('[neococo] Napi2NativeLoader: Bypass已通过环境变量禁用');
   }
   // nativePacketHandler.onAll((packet) => {
   //     console.log('[Packet]', packet.uin, packet.cmd, packet.hex_data);
@@ -75,11 +75,11 @@ export async function NCoreInitFramework (
         const body = new NapProtoMsg(OidbSvcTrpcTcp0XCDE_2RespBody).decode(base.body);
         if (body.inner?.value) {
           dbPassphrase = body.inner.value;
-          logger.log('[NapCat] 已启用数据库辅助支持能力');
+          logger.log('[neococo] 已启用数据库辅助支持能力');
         }
       }
     } catch (e) {
-      logger.logError('[NapCat] [0xCDE_2] 解析失败:', e);
+      logger.logError('[neococo] [0xCDE_2] 解析失败:', e);
     }
   });
 
@@ -128,12 +128,12 @@ export async function NCoreInitFramework (
       WebUiDataRuntime.setQQLoginQrcodeURL(qrcodeUrl);
       WebUiDataRuntime.setQQLoginError('');
       WebUiDataRuntime.setQQLoginPhase('waiting_qrcode');
-      logger.log('[NapCat] [Framework] 二维码已更新, URL:', qrcodeUrl);
+      logger.log('[neococo] [Framework] 二维码已更新, URL:', qrcodeUrl);
     };
 
     loginListener.onQRCodeSessionFailed = (errType: number, errCode: number) => {
       if (!loginContext.isLogined) {
-        logger.logError('[NapCat] [Framework] [Login] QRCode Session Failed, ErrType:', errType, 'ErrCode:', errCode);
+        logger.logError('[neococo] [Framework] [Login] QRCode Session Failed, ErrType:', errType, 'ErrCode:', errCode);
         if (errType === 1 && errCode === 3) {
           WebUiDataRuntime.setQQLoginError('二维码已过期，请刷新');
         }
@@ -142,12 +142,12 @@ export async function NCoreInitFramework (
 
     loginListener.onLoginFailed = (...args) => {
       const errInfo = JSON.stringify(args);
-      logger.logError('[NapCat] [Framework] [Login] Login Failed, ErrInfo:', errInfo);
+      logger.logError('[neococo] [Framework] [Login] Login Failed, ErrInfo:', errInfo);
       WebUiDataRuntime.setQQLoginError(`登录失败: ${errInfo}`);
     };
 
     loginListener.onLoginConnected = () => {
-      logger.log('[NapCat] [Framework] 登录服务已连接');
+      logger.log('[neococo] [Framework] 登录服务已连接');
       // 注册 WebUI 登录操作回调
       registerWebUiLoginCallbacks(loginService, loginContext, logger);
       // 获取历史登录列表供 WebUI 使用
@@ -155,20 +155,20 @@ export async function NCoreInitFramework (
         const list = res.LocalLoginInfoList.filter((item) => item.isQuickLogin);
         WebUiDataRuntime.setQQQuickLoginList(list.map((item) => item.uin.toString()));
         WebUiDataRuntime.setQQNewLoginList(list);
-      }).catch(e => logger.logError('[NapCat] [Framework] 获取登录列表失败:', e));
+      }).catch(e => logger.logError('[neococo] [Framework] 获取登录列表失败:', e));
       if (!loginContext.isLogined) {
         const requested = loginService.getQRCodePicture();
-        logger.logWarn('[NapCat] [Framework] 登录服务连接完成，正在获取二维码', { requested, msfStatus: loginService.getMsfStatus() });
+        logger.logWarn('[neococo] [Framework] 登录服务连接完成，正在获取二维码', { requested, msfStatus: loginService.getMsfStatus() });
       }
     };
 
     loginListener.onQRCodeSessionUserScaned = () => {
       WebUiDataRuntime.setQQLoginPhase('qrcode_scanned');
-      logger.log('[NapCat] [Framework] 二维码已被扫描，等待确认...');
+      logger.log('[neococo] [Framework] 二维码已被扫描，等待确认...');
     };
 
     loginListener.onPasswordLoginFailed = (...args) => {
-      logger.logError('[NapCat] [Framework] 密码登录失败:', ...args);
+      logger.logError('[neococo] [Framework] 密码登录失败:', ...args);
     };
 
     loginService.addKernelLoginListener(proxiedListenerOf(loginListener, logger));
@@ -197,10 +197,10 @@ export async function NCoreInitFramework (
   //     try {
   //       const result = dbApi.readDatabase('nt_msg.db');
   //       if (result) {
-  //         logger.log('[NapCat] [Database] nt_msg.db:\n' + dbApi.formatResults([result]));
+  //         logger.log('[neococo] [Database] nt_msg.db:\n' + dbApi.formatResults([result]));
   //       }
   //     } catch (e) {
-  //       logger.logError('[NapCat] [Database] 读取失败:', e);
+  //       logger.logError('[neococo] [Database] 读取失败:', e);
   //     }
   //   }
   // }
@@ -237,7 +237,7 @@ export async function NCoreInitFramework (
     restart: async (tips) => {
       try {
         const restartResult = await WebUiDataRuntime.requestRestartProcess();
-        logger.logWarn('[NapCat] [Framework] 账号已离线，正在重启 Worker 以重新创建 QQ 登录服务', restartResult);
+        logger.logWarn('[neococo] [Framework] 账号已离线，正在重启 Worker 以重新创建 QQ 登录服务', restartResult);
         if (restartResult.result) return true;
         WebUiDataRuntime.setQQLoginPhase('offline');
         WebUiDataRuntime.setQQLoginError(`${tips}\n登录服务重启失败：${restartResult.message}`);
@@ -264,14 +264,14 @@ function registerWebUiLoginCallbacks (
     if (msfStatus === 2) {
       WebUiDataRuntime.setQQLoginPhase('reconnecting');
       const connected = loginService.connect();
-      logger.logWarn('[NapCat] [Framework] 登录服务离线，正在重连以获取二维码', { connected, msfStatus });
+      logger.logWarn('[neococo] [Framework] 登录服务离线，正在重连以获取二维码', { connected, msfStatus });
       if (!connected) {
         throw new Error('QQ 登录服务无法重新连接');
       }
       return;
     }
     const requested = loginService.getQRCodePicture();
-    logger.logWarn('[NapCat] [Framework] 请求刷新二维码', { requested, msfStatus });
+    logger.logWarn('[neococo] [Framework] 请求刷新二维码', { requested, msfStatus });
     if (!requested) {
       throw new Error('QQ 未接受二维码刷新请求');
     }
@@ -283,7 +283,7 @@ function registerWebUiLoginCallbacks (
       if (!uin) {
         return resolve({ result: false, message: '快速登录失败' });
       }
-      logger.log('[NapCat] [Framework] 正在快速登录', uin);
+      logger.log('[neococo] [Framework] 正在快速登录', uin);
       loginService.quickLoginWithUin(uin).then(res => {
         const success = res.result === '0' && !res.loginErrorInfo?.errMsg;
         if (!success) {
@@ -297,7 +297,7 @@ function registerWebUiLoginCallbacks (
           resolve({ result: true, message: '' });
         }
       }).catch((e) => {
-        logger.logError('[NapCat] [Framework] 快速登录异常:', e);
+        logger.logError('[neococo] [Framework] 快速登录异常:', e);
         WebUiDataRuntime.setQQLoginError('快速登录发生错误');
         resolve({ result: false, message: '快速登录发生错误' });
       });
@@ -310,7 +310,7 @@ function registerWebUiLoginCallbacks (
       if (!uin || !passwordMd5) {
         return resolve({ result: false, message: '密码登录失败：参数不完整' });
       }
-      logger.log('[NapCat] [Framework] 正在密码登录', uin);
+      logger.log('[neococo] [Framework] 正在密码登录', uin);
       loginService.passwordLogin({
         uin,
         passwordMd5,
@@ -339,7 +339,7 @@ function registerWebUiLoginCallbacks (
           resolve({ result: true, message: '' });
         }
       }).catch((e) => {
-        logger.logError('[NapCat] [Framework] 密码登录异常:', e);
+        logger.logError('[neococo] [Framework] 密码登录异常:', e);
         WebUiDataRuntime.setQQLoginError('密码登录发生错误');
         resolve({ result: false, message: '密码登录发生错误' });
       });
@@ -352,7 +352,7 @@ function registerWebUiLoginCallbacks (
       if (!uin || !passwordMd5 || !ticket) {
         return resolve({ result: false, message: '验证码登录失败：参数不完整' });
       }
-      logger.log('[NapCat] [Framework] 正在验证码登录', uin);
+      logger.log('[neococo] [Framework] 正在验证码登录', uin);
       loginService.passwordLogin({
         uin,
         passwordMd5,
@@ -378,7 +378,7 @@ function registerWebUiLoginCallbacks (
           resolve({ result: true, message: '' });
         }
       }).catch((e) => {
-        logger.logError('[NapCat] [Framework] 验证码登录异常:', e);
+        logger.logError('[neococo] [Framework] 验证码登录异常:', e);
         WebUiDataRuntime.setQQLoginError('验证码登录发生错误');
         resolve({ result: false, message: '验证码登录发生错误' });
       });
@@ -391,7 +391,7 @@ function registerWebUiLoginCallbacks (
       if (!uin || !passwordMd5 || !newDevicePullQrCodeSig) {
         return resolve({ result: false, message: '新设备验证登录失败：参数不完整' });
       }
-      logger.log('[NapCat] [Framework] 正在新设备验证登录', uin);
+      logger.log('[neococo] [Framework] 正在新设备验证登录', uin);
       loginService.passwordLogin({
         uin,
         passwordMd5,
@@ -417,7 +417,7 @@ function registerWebUiLoginCallbacks (
           resolve({ result: true, message: '' });
         }
       }).catch((e) => {
-        logger.logError('[NapCat] [Framework] 新设备验证登录异常:', e);
+        logger.logError('[neococo] [Framework] 新设备验证登录异常:', e);
         WebUiDataRuntime.setQQLoginError('新设备验证登录发生错误');
         resolve({ result: false, message: '新设备验证登录发生错误' });
       });

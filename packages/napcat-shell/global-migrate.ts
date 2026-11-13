@@ -8,11 +8,11 @@ export interface MigrationLogger {
 }
 
 /**
- * 旧版 NapCat 在 Linux 上把 global 目录放在 `<dataPath>/nt_qq/global`,
+ * 旧版 neococo 在 Linux 上把 global 目录放在 `<dataPath>/nt_qq/global`,
  * 新版对齐 QQ 官方 Linux 客户端改为 `<dataPath>/global`。
  *
  * 仅当新目录不存在、且旧目录存在时搬运一次：
- *  - 服务器仅跑 NapCat 的用户通常只有 `nt_qq/`, 迁移后即可复用原有登录凭据,
+ *  - 服务器仅跑 neococo 的用户通常只有 `nt_qq/`, 迁移后即可复用原有登录凭据,
  *    避免重新扫码以及出现两套 login.db / 两个 GUID;
  *  - 若 `QQ/global` 已存在（例如用户同时装了自用 QQ），则保持原样, 不覆盖也不改动,
  *    避免覆盖两份不同的设备身份, 同时天然保证重复启动时不会二次迁移;
@@ -44,10 +44,10 @@ export function migrateLegacyGlobalPath (
       fs.cpSync(legacyGlobalPath, dataPathGlobal, { recursive: true });
       fs.rmSync(legacyGlobalPath, { recursive: true, force: true });
     }
-    logger.log(`[NapCat] [Core] 已迁移 Linux global 目录: ${legacyGlobalPath} -> ${dataPathGlobal}`);
+    logger.log(`[neococo] [Core] 已迁移 Linux global 目录: ${legacyGlobalPath} -> ${dataPathGlobal}`);
     return true;
   } catch (e) {
-    logger.logError('[NapCat] [Core] 迁移 Linux global 目录失败, 将在新路径重建设备信息:', e);
+    logger.logError('[neococo] [Core] 迁移 Linux global 目录失败, 将在新路径重建设备信息:', e);
     return false;
   }
 }
